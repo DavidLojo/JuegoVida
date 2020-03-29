@@ -1,0 +1,15 @@
+Controles por teclado:
+
+    Barra espaciadora: Pausa
+ 
+
+    + :  aumenta a velodidade
+
+    - :  disminue a velocidade
+
+
+-----------------------------------------------------------------------------------
+
+Acerca dos tests:
+
+Tiven problemas coa realizacion de tests, asi que solo fixen 3 tests moi sencillos

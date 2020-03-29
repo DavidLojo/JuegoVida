@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="Mundo.js"></script>
+        <script src="Display.js"></script>
+    </head>
+  <body>
+    <h2 align="center">Generador de cuadrados</h2>
+    <button id="clear" onclick="init()">Clear</button>
+    <gen id="generation"></gen>
+    <space>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</space>
+    <button id="pause" onclick="fakeKeys(32)">Play</button>
+    <space>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</space>
+    <button id="less" onclick="fakeKeys(109)">-</button>
+    <spd id="speed"></spd>
+    <button id="plus" onclick="fakeKeys(107)">+</button>
+    <space>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</space>
+    <earthType>Flat earth?</earthType>
+    <input type="checkbox" onclick="changeToroidal(this)"/>
+
+    <script>
+
+      Tests()
+
+      document.body.appendChild(returnCanvas());
+
+      document.addEventListener("keydown", keyPush);
+
+      canvas.addEventListener('click', function(evt) {
+        var mousePos = getMousePos(canvas, evt);
+        fakeClick(mousePos.x, mousePos.y);
+        console.log('Mouse position: ' + mousePos.x + ',' + mousePos.y);
+        //usado para mostrar coordenadas de el click del raton
+      }, false);
+      document.addEventListener("keydown", keyPush);
+
+      setInterval(update, 1);
+
+
+
+
+
+
+      function update(){
+          updateCanvas();
+          updateWorld();
+          data = returnData();
+          document.getElementById("generation").innerHTML = "Generation: " + data.generation;
+          document.getElementById("speed").innerHTML = "Speed: " + data.speed;
+          if(data.pause == 0){
+              document.getElementById("pause").innerHTML = "Pause";
+          } else {
+            document.getElementById("pause").innerHTML = "Play";
+          }
+      }
+
+      function getMousePos(canvas, evt) {
+        var rect = canvas.getBoundingClientRect();
+        return {
+          x: evt.clientX - rect.left,
+          y: evt.clientY - rect.top
+        };
+      }
+      
+      function keyPush (evt){
+        fakeKeys(evt.keyCode)
+      }
+
+
+      function changeToroidal(checkbox){
+	setToroidal(checkbox.checked);
+      }
+
+      function Tests(){
+	TestCellBoxExists();
+	init();
+	TestCellBoxStartsEmpty();
+	init();
+	TestIfCellIsClickedChangesColor();
+	init();
+	TestIfCellIsClickedTwiceColorChangesBack();
+	init();
+	TestIfThereIsOneCellAndTimePassesCellDies();
+	init();
+      }
+
+      function TestCellBoxExists(){
+        if(cells != null){
+	  console.log("TestCellBoxExists sucess!");
+	} else {
+	  console.log("TestCellBoxExists failure");
+	}
+      }
+
+      function TestCellBoxStartsEmpty(){
+	  var resultado = true;
+	  for(i = 0; i < cells.length; i++){
+      		for(j = 0; j < cells[i].length; j++){
+			if(cells[i][j].color == 1){
+				resultado = false;
+			}
+		}
+          }
+	  if(resultado){
+	 	 console.log("TestCellBoxStartsEmpty sucess!");
+	  } else {
+	 	 console.log("TestCellBoxStartsEmpty failure");
+	  }
+      }
+
+      function TestIfCellIsClickedChangesColor(){
+          var resultado = false;
+	  var hasChanged = false;
+	  fakeClick(10,10);
+	  for(i = 0; i < cells.length; i++){
+      		for(j = 0; j < cells[i].length; j++){
+                     if(hasChanged == false){
+			if(cells[i][j].color == 1){
+				resultado = true;
+				hasChanged = true;
+			}
+                     } else {
+			if(cells[i][j].color == 1){
+				resultado = false;
+			}
+                     }
+		}
+          }
+
+	  if(resultado){
+	 	 console.log("TestIfCellIsClickedChangesColor sucess!");
+	  } else {
+	 	 console.log("TestIfCellIsClickedChangesColor failure");
+	  }
+      }
+
+
+      function TestIfCellIsClickedTwiceColorChangesBack(){
+          var resultado = false;
+	  var hasChanged = false;
+	  fakeClick(10,10);
+	  fakeClick(10,10);
+	  var resultado = true;
+	  for(i = 0; i < cells.length; i++){
+      		for(j = 0; j < cells[i].length; j++){
+			if(cells[i][j].color == 1){
+				resultado = false;
+			}
+		}
+          }
+	  if(resultado){
+	 	 console.log("TestIfCellIsClickedTwiceColorChangesBack sucess!");
+	  } else {
+	 	 console.log("TestIfCellIsClickedTwiceColorChangesBack failure");
+	  }
+      }
+	
+
+    </script>
+
+  </body>
+</html>
